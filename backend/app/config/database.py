@@ -7,7 +7,9 @@ db = SQLAlchemy()
 
 def init_db(app):
     """Inicializa la base de datos"""
-    db.init_app(app)
+    # Verificar si ya está inicializado para evitar errores en tests
+    if not hasattr(app, 'extensions') or 'sqlalchemy' not in app.extensions:
+        db.init_app(app)
     with app.app_context():
         db.create_all()
 
